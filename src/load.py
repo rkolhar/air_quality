@@ -1,6 +1,6 @@
 
 from .model import MeasurementOrm, MeasurementModel
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exists, select
 from sqlalchemy.orm import Session, sessionmaker
 from typing import List
 
@@ -25,13 +25,22 @@ class Loader:
         self.air_quality_data = air_quality_data
     
     
+    def check_if_id_exists(self, item_id):
+    #    print(self.session.query(MeasurementOrm).filter(MeasurementOrm.id == item_id))
+        return self.session.query(MeasurementOrm).filter(MeasurementOrm.id == item_id).first() is not None
+    
     def load_data(self):
         try:
-            for item in self.air_quality_data[0]:
-                air_instance = MeasurementOrm(**item)
-                self.session.add(air_instance)
-            self.session.commit()
-            print("Data loaded successfully.")
+            for item in self.air_quality_data: # [0]
+            #    print(item)
+                if self.check_if_id_exists(item['id']):
+                    print("Data already present. Skipping...")
+                    break
+                else:
+                    air_instance = MeasurementOrm(**item)
+                    self.session.add(air_instance)
+                self.session.commit()
+                print("Data inserted successfully.")
     
         except Exception as e:
             print(f"Error adding data for item {item}: {e}")

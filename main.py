@@ -10,5 +10,5 @@ previous_date = current_date - timedelta(days=1)
 from_date = previous_date.strftime('%Y-%m-%d')
 
 if __name__ == "__main__":
-    run_etl("postgresql://postgres:postgres@localhost", from_date, to_date, 500) 
+    run_etl("postgresql://postgres:postgres@localhost", from_date, to_date, 1000) 
  

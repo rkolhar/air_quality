@@ -2,8 +2,7 @@
 import pandas as pd
 from pandas import json_normalize
 from typing import List, Optional, Dict
-
-from sqlalchemy import true
+import uuid
 
 from .model import MeasurementModel
 
@@ -25,12 +24,12 @@ class Transformer:
         Returns:
            transformed data as a list of model
         """
-        air_quality_data = []
+        #air_quality_data = []
         
         for item in self.raw_data:
             transformed_data = self.transform_data(item)
-            data_list = transformed_data.to_dict(orient='records')
-            air_quality_data.append(data_list)
+            air_quality_data = transformed_data.to_dict(orient='records')
+        #    air_quality_data.append(data_list)
         print('transformed data successfully')
         
         return air_quality_data
@@ -53,7 +52,7 @@ class Transformer:
                                 'isMobile': 'is_mobile', 'isAnalysis': 'is_analysis', 'sensorType': 'sensor_type'})
         df.reset_index(drop=True, inplace=True)
         
-        df['id'] = range(1, len(df) + 1)
+        df['id'] = df.apply(lambda x: str(uuid.uuid4()), axis=1)
         
         filtered_df = df[df['value'] >= 0]
         return filtered_df
