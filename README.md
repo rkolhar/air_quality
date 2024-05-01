@@ -2,7 +2,7 @@
 
 This repo extracts measurement data from OpenAQ API, transforms and loads data into postgres database using a pydantic model.
 
-## How to run::
+## How to run:
 1. Spin up docker containers using cmd:
 ```bash
     docker compose up –d –build
