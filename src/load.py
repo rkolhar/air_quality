@@ -1,6 +1,6 @@
 
 from .model import MeasurementOrm, MeasurementModel
-from sqlalchemy import create_engine, exists, select
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from typing import List
 
@@ -26,7 +26,6 @@ class Loader:
     
     
     def check_if_id_exists(self, item_id):
-    #    print(self.session.query(MeasurementOrm).filter(MeasurementOrm.id == item_id))
         return self.session.query(MeasurementOrm).filter(MeasurementOrm.id == item_id).first() is not None
     
     def load_data(self):
